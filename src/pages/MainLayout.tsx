@@ -1,7 +1,7 @@
 import { ModeToggle } from "@/components/mode-toggle";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Button } from "@/components/ui/button";
-import { Sidebar, SidebarContent, SidebarHeader, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { Sidebar, SidebarContent, SidebarGroup, SidebarHeader, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Outlet, useNavigate } from "react-router-dom";
 
 
@@ -20,16 +20,17 @@ export default function MainLayout() {
             <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
 
                 <SidebarProvider>
-                    <Sidebar >
+                    <Sidebar className="" >
 
-                        <SidebarHeader>
-                            <h1 className="text-xl bold  font-bold   text-center   ">Spot</h1>
+                        <SidebarHeader className="mb-2">
+                            <h1 className="text-xl bold  font-bold   text-center    ">Spot</h1>
                             {/* hnb2a n7ot el logo ba3deen  */}
 
 
                         </SidebarHeader>
-                        <SidebarContent >
-                            <div className=" flex flex-col text-start w-full ">
+                        <SidebarContent  >
+                            <SidebarGroup className="flex flex-col   gap-2  ">
+
                                 {buttons.map((btn) => (
                                     <Button
                                         key={btn.path}
@@ -40,19 +41,19 @@ export default function MainLayout() {
                                         {btn.label}
                                     </Button>
                                 ))}
-                            </div>
+                            </SidebarGroup>
                         </SidebarContent>
                     </Sidebar>
 
-                    <div className="grow  flex flex-col rounded   ">
-                        <div className="  flex justify-between items-center border-b-2 mb-5">
+                    <div className="grow  flex flex-col     ">
+                        <div className="  flex justify-between items-center border-b-2   ">
 
                             <SidebarTrigger />
                             <ModeToggle />
 
 
                         </div>
-                        <div className="outlet grow   ">
+                        <div className="outlet grow     ">
                             <main >
                                 <Outlet />
                             </main>
