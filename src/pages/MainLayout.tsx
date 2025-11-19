@@ -53,7 +53,7 @@ export default function MainLayout() {
 
 
                         </div>
-                        <div className="outlet grow     ">
+                        <div className="outlet grow     p-2">
                             <main >
                                 <Outlet />
                             </main>

@@ -1,14 +1,22 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import tailwindcss from '@tailwindcss/vite';
-import path from 'path'; // <-- required for alias
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
+import path from 'path'
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src'), // maps '@' to the src folder
+      '@': path.resolve(__dirname, 'src'),
     },
   },
-});
+
+  // فقط strict هنا لأنها مدعومة من esbuild
+  esbuild: {
+    tsconfigRaw: {
+      compilerOptions: {
+        strict: false
+      }
+    }
+  }
+})

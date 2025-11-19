@@ -4,10 +4,16 @@
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
   ],
-    "compilerOptions": {
+  "compilerOptions": {
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+
+    "skipLibCheck": true,
+    "checkJs": false,
+    "allowJs": true,
+    "strict": false,
+    "noEmit": true
   }
 }
