@@ -6,11 +6,11 @@ import { ComboBox } from "@/components/ui/combobox";
 export default function Requests() {
   return (
     <>
-      <div className="flex   items-center gap-2 justify-center p-3 " >
-        <div className="w-64">
-          <ButtonGroupInput />
-        </div>
-        <div className=""><ComboBox  /></div>
+      <div className="flex flex-col lg:flex-row    items-center gap-2 justify-center p-3 " >
+   
+          <ButtonGroupInput classnameGroup="lg:w-[400px] transition-all duration-300 "  />
+
+        <div className=""><ComboBox classname="w-[150px] lg:w-[200px] transition-all duration-300" placeholder="filter-by"  /></div>
 
       </div>
     </>
