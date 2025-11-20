@@ -14,7 +14,7 @@ export default function Table({ header, row, footer }: TableProps) {
               <th
                 key={index}
                 scope="col"
-                className="px-6 py-3 text-left text-sm font-semibold  uppercase tracking-wider"
+                className="lg:px-6 px-2 py-3 text-center text-[10px] lg:text-sm font-semibold  uppercase tracking-wider"
               >
                 {col}
               </th>
@@ -30,7 +30,7 @@ export default function Table({ header, row, footer }: TableProps) {
               className="transition-colors duration-150"
             >
               {header.map((col, colIndex) => (
-                <td key={colIndex} className="px-6 py-4 text-sm ">
+                <td key={colIndex} className="lg:px-6 px-2 py-3 text-center text-[10px] lg:text-sm ">
                   {r[col]}
                 </td>
               ))}
@@ -46,7 +46,7 @@ export default function Table({ header, row, footer }: TableProps) {
                 {header.map((col, colIndex) => (
                   <td
                     key={colIndex}
-                    className="px-6 py-3 text-sm font-medium "
+                    className="lg:px-6 px-2 py-3 text-center text-[10px] lg:text-sm font-medium "
                   >
                     {f[col]}
                   </td>
