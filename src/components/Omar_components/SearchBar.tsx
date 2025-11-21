@@ -4,18 +4,20 @@ import { Button } from "@/components/ui/button"
 import { ButtonGroup } from "@/components/ui/button-group"
 import { Input } from "@/components/ui/input"
 
-type ButtonGroupProps =
+type ButtonGroupProps<T> =
 {
-  classnameGroup? :string , 
-  classnameInput? :string  
+  classnameGroup? :string ;
+  classnameInput? :string  ;
+  onClick?: ()=>void ;
+  onChange? : (value :T)=>void;
 }
 
 
-export function ButtonGroupInput( {classnameGroup , classnameInput}:ButtonGroupProps) {
+export function ButtonGroupInput( {classnameGroup , classnameInput ,onClick , onChange}:ButtonGroupProps) {
   return (
     <ButtonGroup className={`${classnameGroup}`}>
-      <Input placeholder="Search..." className={`${classnameInput}`} />
-      <Button variant="outline" aria-label="Search">
+      <Input placeholder="Search..." className={`${classnameInput}`} onChange={onChange} />
+      <Button variant="outline" aria-label="Search" onClick={onClick}>
         <SearchIcon />
       </Button>
     </ButtonGroup>

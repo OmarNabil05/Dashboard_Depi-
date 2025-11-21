@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ComboBox } from "@/components/ui/combobox";
+import { ComboBox }  from "@/components/ui/combobox";
 import { Input } from "@/components/ui/input";
 import Table from "@/components/ui/Table";
 import { Button } from "@/components/ui/button";
@@ -118,7 +118,7 @@ export default function TablesPage() {
 
       {/* Inputs */}
       <div className="flex flex-col md:flex-row gap-3 items-center">
-        <ComboBox items={categories} value={selectedClass} onChange={handleComboChange} placeholder="اختر فئة..." />
+        <ComboBox items={categories}  onChange={handleComboChange} placeholder="اختر فئة..." />
 
         <Input type="text" placeholder="اسم الطاولة" value={name} onChange={(e) => setName(e.target.value)} onKeyDown={handleKeyPress} />
 
@@ -132,7 +132,7 @@ export default function TablesPage() {
         <span className="text-white">Filter by class:</span>
         <ComboBox
           items={categories}
-          value={filterClass}
+         
           onChange={(v) => setFilterClass(v)}
           placeholder="اختر فئة للفلترة"
         />
