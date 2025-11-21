@@ -32,23 +32,27 @@ export default function Requests() {
   ]
   const header = ["customer", "table", "date", "from", "to", "accept", "reject"];
 
-  const row = [
-    {
-      customer: "Alice Johnson",
-      table: "A",
-      date: "2025-11-22",
-      accept: <button className="bg-green-500 text-white px-2 py-1 rounded">Accept</button>,
-      reject: <button className="bg-red-500 text-white px-2 py-1 rounded">Reject</button>
-    },
-    {
-      customer: "Bob Lee",
-      table: "D",
-      date: "2025-11-23",
-      accept: <button className="bg-green-500 text-white px-2 py-1 rounded">Accept</button>,
-      reject: <button className="bg-red-500 text-white px-2 py-1 rounded">Reject</button>
-    },
+const row = [
+  {
+    customer: "Alice Johnson",
+    table: "A",
+    date: "2025-11-22",
+    from: "10:00",
+    to: "12:00",
+    accept: <button className="bg-green-500 text-white px-2 py-1 rounded">Accept</button>,
+    reject: <button className="bg-red-500 text-white px-2 py-1 rounded">Reject</button>,
+  },
+  {
+    customer: "Bob Lee",
+    table: "D",
+    date: "2025-11-23",
+    from: "14:00",
+    to: "16:00",
+    accept: <button className="bg-green-500 text-white px-2 py-1 rounded">Accept</button>,
+    reject: <button className="bg-red-500 text-white px-2 py-1 rounded">Reject</button>,
+  },
+];
 
-  ];
 
 const filteredRows = row
   .filter((element) => (value === "" ? true : element.table === value))
@@ -60,7 +64,7 @@ const filteredRows = row
     <div className="">
       <header className="flex flex-col lg:flex-row  items-center gap-2 justify-center mb-2 lg:p-3 " >
 
-        <Input className="lg:w-[400px] transition-all duration-300 "onChange={(e) => setSearch(e.target.value)} placeholder="Search.."  />
+        <Input className=" w-[300px] lg:w-[400px] transition-all duration-300 "onChange={(e) => setSearch(e.target.value)} placeholder="Search.."  />
         <ComboBox classname="w-[200px] transition-all duration-300 " placeholder="filter-by" onChange={(value) => { setValue(value) }} items={options} />
 
       </header>
