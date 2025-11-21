@@ -39,8 +39,8 @@ const row = [
     date: "2025-11-22",
     from: "10:00",
     to: "12:00",
-    accept: <button className="bg-green-500 text-white px-2 py-1 rounded">Accept</button>,
-    reject: <button className="bg-red-500 text-white px-2 py-1 rounded">Reject</button>,
+    accept: <button className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-700 " >Accept</button>,
+    reject: <button className="bg-red-500 text-white px-2 py-1 rounded  hover:bg-red-700 ">Reject</button>,
   },
   {
     customer: "Bob Lee",
@@ -48,8 +48,8 @@ const row = [
     date: "2025-11-23",
     from: "14:00",
     to: "16:00",
-    accept: <button className="bg-green-500 text-white px-2 py-1 rounded">Accept</button>,
-    reject: <button className="bg-red-500 text-white px-2 py-1 rounded">Reject</button>,
+    accept: <button className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-700">Accept</button>,
+    reject: <button className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-700">Reject</button>,
   },
 ];
 
