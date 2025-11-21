@@ -1,15 +1,17 @@
 // import React from 'react'
 
-import { ButtonGroupInput } from "@/components/Omar_components/SearchBar";
+
 import { ComboBox } from "@/components/ui/combobox";
+import { Input } from "@/components/ui/input";
 
 
 import Table from "@/components/ui/Table";
-import { useState } from "react";
+import {  useState } from "react";
 
 export default function Requests() {
   const [value, setValue] = useState('');
   const [search, setSearch] = useState('');
+  
 
   const options = [
 
@@ -48,14 +50,17 @@ export default function Requests() {
 
   ];
 
-  const filteredRows = value === "" ? row : row.filter((element) => { return element.table == value })
+const filteredRows = row
+  .filter((element) => (value === "" ? true : element.table === value))
+  .filter((element) => (search === "" ? true : element.customer.toLowerCase().includes(search.toLowerCase())));
+
 
 
   return (
     <div className="">
       <header className="flex flex-col lg:flex-row  items-center gap-2 justify-center mb-2 lg:p-3 " >
 
-        <ButtonGroupInput classnameGroup="lg:w-[400px] transition-all duration-300 "  />
+        <Input className="lg:w-[400px] transition-all duration-300 "onChange={(e) => setSearch(e.target.value)} placeholder="Search.."  />
         <ComboBox classname="w-[200px] transition-all duration-300 " placeholder="filter-by" onChange={(value) => { setValue(value) }} items={options} />
 
       </header>
