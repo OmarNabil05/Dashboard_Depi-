@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { ComboBox } from "@/components/shahd_components/ComboBox";
 import { Input } from "@/components/ui/input";
 import Table from "@/components/shahd_components/Table";
 import { Button } from "@/components/ui/button";
 import { Delete, Edit, X, Upload } from "lucide-react";
+import * as menuApi from "@/services/menuApi";
 
 type MenuItem = {
   id: number;
@@ -30,6 +31,7 @@ export default function MenuPage() {
   const headers = ["Image", "Name", "Category", "Price", "Description", "Available", "Edit", "Delete"];
 
   const [items, setItems] = useState<MenuItem[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [name, setName] = useState("");
   const [price, setPrice] = useState<string>("");
@@ -44,6 +46,24 @@ export default function MenuPage() {
 
   // Reference for file input
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Load menu items from API on mount
+  useEffect(() => {
+    loadMenuItems();
+  }, []);
+
+  const loadMenuItems = async () => {
+    try {
+      setLoading(true);
+      const data = await menuApi.getAllMenuItems();
+      setItems(data);
+    } catch (error) {
+      console.error("Error loading menu items:", error);
+      setWarning("فشل تحميل البيانات من السيرفر!");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -79,7 +99,7 @@ export default function MenuPage() {
     }
   };
 
-  const addItem = () => {
+  const addItem = async () => {
     if (!selectedCategory) return setWarning("الرجاء اختيار فئة للصنف!");
     if (!name.trim()) return setWarning("الرجاء إدخال اسم الصنف!");
 
@@ -92,29 +112,41 @@ export default function MenuPage() {
 
     if (!image) return setWarning("الرجاء إضافة صورة للصنف!");
 
-    const newItem: MenuItem = {
-      id: Date.now(),
-      name: name.trim(),
-      category: selectedCategory,
-      price: priceNum,
-      description: description.trim(),
-      image: image,
-      available: available,
-    };
+    try {
+      const newItem = await menuApi.addMenuItem({
+        name: name.trim(),
+        category: selectedCategory,
+        price: priceNum,
+        description: description.trim(),
+        image: image,
+        available: available,
+      });
 
-    setItems([...items, newItem]);
-    
-    // Reset form
-    setName("");
-    setPrice("");
-    setDescription("");
-    setSelectedCategory("");
-    clearImage();
-    setAvailable(true);
-    setWarning("");
+      setItems([...items, newItem]);
+      
+      // Reset form
+      setName("");
+      setPrice("");
+      setDescription("");
+      setSelectedCategory("");
+      clearImage();
+      setAvailable(true);
+      setWarning("");
+    } catch (error) {
+      console.error("Error adding item:", error);
+      setWarning("فشل إضافة الصنف!");
+    }
   };
 
-  const deleteItem = (id: number) => setItems(items.filter((item) => item.id !== id));
+  const deleteItem = async (id: number) => {
+    try {
+      await menuApi.deleteMenuItem(id);
+      setItems(items.filter((item) => item.id !== id));
+    } catch (error) {
+      console.error("Error deleting item:", error);
+      setWarning("فشل حذف الصنف!");
+    }
+  };
 
   const editItem = (item: MenuItem) => {
     setName(item.name);
@@ -194,6 +226,10 @@ export default function MenuPage() {
   return (
     <div className="p-6 flex flex-col gap-6">
       <h1 className="text-2xl font-bold text-white">Manage Menu</h1>
+
+      {loading && (
+        <div className="text-white text-center">جاري التحميل...</div>
+      )}
 
       {/* Inputs */}
       <div className="flex flex-col md:flex-row gap-3 items-center">

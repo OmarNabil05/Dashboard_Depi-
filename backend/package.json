@@ -1,0 +1,18 @@
+{
+  "name": "spot-menu-api",
+  "version": "1.0.0",
+  "description": "REST API for Spot Restaurant Menu Management",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": ["restaurant", "menu", "api", "express"],
+  "author": "Shahd",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  }
+}
