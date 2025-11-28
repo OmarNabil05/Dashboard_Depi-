@@ -69,7 +69,7 @@ const filteredRows = row
 
       <Filter items={options} onChangeCombo={(value) => { setValue(value) }} onChangeInput={(e) => setSearch(e.target.value)} />
 
-      <div className="max-h-[calc(100vh-130px)] overflow-y-auto">
+      <div className="max-h-[calc(100vh-130px)] overflow-y-auto mt-3">
         <Table header={header} row={filteredRows} />
       </div>
 
