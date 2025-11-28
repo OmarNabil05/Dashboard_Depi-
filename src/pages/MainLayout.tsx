@@ -15,7 +15,7 @@ export default function MainLayout() {
     <ThemeProvider  defaultTheme="dark" storageKey="vite-ui-theme">
       <div className="min-h-screen flex flex-col bg-background ">
         <Navbar items={navItems} />
-        <main className="flex-1 container mx-auto  bg-red-600">
+        <main className="flex-1 container mx-auto  ">
           <Outlet />
         </main>
       </div>
