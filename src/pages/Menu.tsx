@@ -9,13 +9,13 @@ import { Delete, Edit, X, Upload } from "lucide-react";
 import * as menuApi from "@/services/menuApi";
 
 type MenuItem = {
-  id: number;
+  id: string;
   name: string;
   category: string;
   price: number;
   description: string;
   image: string;
-  available: boolean;
+  available?: boolean;
 };
 
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
@@ -56,10 +56,11 @@ export default function MenuPage() {
     try {
       setLoading(true);
       const data = await menuApi.getAllMenuItems();
-      setItems(data);
+      setItems(data || []);
     } catch (error) {
       console.error("Error loading menu items:", error);
       setWarning("فشل تحميل البيانات من السيرفر!");
+      setItems([]);
     } finally {
       setLoading(false);
     }
@@ -138,7 +139,7 @@ export default function MenuPage() {
     }
   };
 
-  const deleteItem = async (id: number) => {
+  const deleteItem = async (id: string) => {
     try {
       await menuApi.deleteMenuItem(id);
       setItems(items.filter((item) => item.id !== id));
@@ -179,14 +180,16 @@ export default function MenuPage() {
 
   // APPLY FILTER
   const filteredItems = filterCategory
-    ? items.filter((item) => item.category === filterCategory)
+    ? items.filter((item) => item?.category === filterCategory)
     : items;
 
-  const tableRows = filteredItems.map((item) => ({
+  const tableRows = filteredItems
+    .filter((item) => item != null)
+    .map((item) => ({
     Image: (
       <div className="flex justify-center">
         <img
-          src={item.image}
+          src={item.image || ''}
           alt={item.name}
           className="w-12 h-12 object-cover rounded-md"
         />
@@ -203,12 +206,12 @@ export default function MenuPage() {
     Available: (
       <span
         className={`px-2 py-1 rounded text-xs font-semibold ${
-          item.available
+          item.available !== false
             ? "bg-green-500/20 text-green-400"
             : "bg-red-500/20 text-red-400"
         }`}
       >
-        {item.available ? "Available" : "Unavailable"}
+        {item.available !== false ? "Available" : "Unavailable"}
       </span>
     ),
     Edit: (
