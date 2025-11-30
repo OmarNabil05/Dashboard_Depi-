@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'http://localhost:5000/api/menu';
 
 export interface MenuItem {
   id: string;
@@ -12,94 +12,83 @@ export interface MenuItem {
   updatedAt?: string;
 }
 
-// Backend returns _id and photoUrl, frontend uses id and image
-interface BackendMenuItem {
-  _id: string;
-  name: string;
-  category: string;
-  price: number;
-  description: string;
-  photoUrl: string;
-  createdAt?: string;
-  updatedAt?: string;
-}
-
-// Map backend item to frontend format
-function mapToFrontend(item: BackendMenuItem): MenuItem {
-  return {
+// Get all menu items
+export async function getAllMenuItems(): Promise<MenuItem[]> {
+  const response = await fetch(API_URL);
+  if (!response.ok) throw new Error('Failed to fetch menu items');
+  const data = await response.json();
+  // map _id to id and photoUrl to image
+  return data.map((item: any) => ({
     id: item._id,
     name: item.name,
     category: item.category,
     price: item.price,
     description: item.description,
     image: item.photoUrl,
-    available: true, // Backend doesn't have this field, default to true
+    available: true,
     createdAt: item.createdAt,
     updatedAt: item.updatedAt,
-  };
-}
-
-// Map frontend item to backend format
-function mapToBackend(item: Omit<MenuItem, 'id'>): Omit<BackendMenuItem, '_id'> {
-  return {
-    name: item.name,
-    category: item.category,
-    price: item.price,
-    description: item.description,
-    photoUrl: item.image,
-  };
-}
-
-// Get all menu items
-export async function getAllMenuItems(): Promise<MenuItem[]> {
-  const response = await fetch(`${API_URL}/menu`);
-  const data: BackendMenuItem[] = await response.json();
-  return data.map(mapToFrontend);
-}
-
-// Get menu items by category
-export async function getMenuByCategory(category: string): Promise<MenuItem[]> {
-  const response = await fetch(`${API_URL}/menu/category/${category}`);
-  const data: BackendMenuItem[] = await response.json();
-  return data.map(mapToFrontend);
+  }));
 }
 
 // Add new menu item
 export async function addMenuItem(item: Omit<MenuItem, 'id'>): Promise<MenuItem> {
-  const response = await fetch(`${API_URL}/menu`, {
+  const response = await fetch(API_URL, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(mapToBackend(item)),
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name: item.name,
+      category: item.category,
+      price: item.price,
+      description: item.description,
+      photoUrl: item.image,
+    }),
   });
-  const data: BackendMenuItem = await response.json();
-  return mapToFrontend(data);
+  if (!response.ok) throw new Error('Failed to add menu item');
+  const data = await response.json();
+  return {
+    id: data._id,
+    name: data.name,
+    category: data.category,
+    price: data.price,
+    description: data.description,
+    image: data.photoUrl,
+    available: true,
+    createdAt: data.createdAt,
+    updatedAt: data.updatedAt,
+  };
 }
 
 // Update menu item
 export async function updateMenuItem(id: string, item: Partial<MenuItem>): Promise<MenuItem> {
-  const backendItem: Partial<BackendMenuItem> = {};
-  if (item.name) backendItem.name = item.name;
-  if (item.category) backendItem.category = item.category;
-  if (item.price) backendItem.price = item.price;
-  if (item.description) backendItem.description = item.description;
-  if (item.image) backendItem.photoUrl = item.image;
-
-  const response = await fetch(`${API_URL}/menu/${id}`, {
+  const response = await fetch(API_URL + '/' + id, {
     method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(backendItem),
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name: item.name,
+      category: item.category,
+      price: item.price,
+      description: item.description,
+      photoUrl: item.image,
+    }),
   });
-  const data: BackendMenuItem = await response.json();
-  return mapToFrontend(data);
+  if (!response.ok) throw new Error('Failed to update menu item');
+  const data = await response.json();
+  return {
+    id: data._id,
+    name: data.name,
+    category: data.category,
+    price: data.price,
+    description: data.description,
+    image: data.photoUrl,
+    available: true,
+    createdAt: data.createdAt,
+    updatedAt: data.updatedAt,
+  };
 }
 
 // Delete menu item
 export async function deleteMenuItem(id: string): Promise<void> {
-  await fetch(`${API_URL}/menu/${id}`, {
-    method: 'DELETE',
-  });
+  const response = await fetch(API_URL + '/' + id, { method: 'DELETE' });
+  if (!response.ok) throw new Error('Failed to delete menu item');
 }
