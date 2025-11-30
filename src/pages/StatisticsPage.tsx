@@ -150,7 +150,7 @@ const StatisticsPage: React.FC = () => {
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
         {[
           { icon:"📊", label: "Total Reservations", value: counts.reservations },
-          { icon: "💰", label: "Revenue", value: `$${counts.revenue.toLocaleString()}` },
+        
           { icon: "🪑" , label: "Tables Used", value: counts.tablesInUse },
         ].map((item, i) => (
           <motion.div

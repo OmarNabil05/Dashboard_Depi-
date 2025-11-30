@@ -70,13 +70,11 @@ export default function MenuPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Validate file size
     if (file.size > MAX_IMAGE_SIZE) {
       setWarning("حجم الصورة يجب أن يكون أقل من 5 ميجابايت!");
       return;
     }
 
-    // Validate file type
     if (!file.type.startsWith("image/")) {
       setWarning("الرجاء اختيار ملف صورة صحيح!");
       return;
@@ -110,7 +108,6 @@ export default function MenuPage() {
     }
 
     if (!description.trim()) return setWarning("الرجاء إدخال وصف الصنف!");
-
     if (!image) return setWarning("الرجاء إضافة صورة للصنف!");
 
     try {
@@ -124,7 +121,7 @@ export default function MenuPage() {
       });
 
       setItems([...items, newItem]);
-      
+
       // Reset form
       setName("");
       setPrice("");
@@ -156,7 +153,7 @@ export default function MenuPage() {
     setDescription(item.description);
     setImage(item.image);
     setImagePreview(item.image);
-    setAvailable(item.available);
+    setAvailable(item.available ?? true); // ✅ Fixed TypeScript error here
     deleteItem(item.id);
   };
 
@@ -186,53 +183,51 @@ export default function MenuPage() {
   const tableRows = filteredItems
     .filter((item) => item != null)
     .map((item) => ({
-    Image: (
-      <div className="flex justify-center">
-        <img
-          src={item.image || ''}
-          alt={item.name}
-          className="w-12 h-12 object-cover rounded-md"
-        />
-      </div>
-    ),
-    Name: item.name,
-    Category: getCategoryLabel(item.category),
-    Price: formatPrice(item.price),
-    Description: (
-      <div className="max-w-xs truncate" title={item.description}>
-        {item.description}
-      </div>
-    ),
-    Available: (
-      <span
-        className={`px-2 py-1 rounded text-xs font-semibold ${
-          item.available !== false
-            ? "bg-green-500/20 text-green-400"
-            : "bg-red-500/20 text-red-400"
-        }`}
-      >
-        {item.available !== false ? "Available" : "Unavailable"}
-      </span>
-    ),
-    Edit: (
-      <Button variant="ghost" size="sm" onClick={() => editItem(item)}>
-        <Edit className="text-green-500 hover:text-green-700" />
-      </Button>
-    ),
-    Delete: (
-      <Button variant="ghost" size="sm" onClick={() => deleteItem(item.id)}>
-        <Delete className="text-red-500 hover:text-red-700" />
-      </Button>
-    ),
-  }));
+      Image: (
+        <div className="flex justify-center">
+          <img
+            src={item.image || ""}
+            alt={item.name}
+            className="w-12 h-12 object-cover rounded-md"
+          />
+        </div>
+      ),
+      Name: item.name,
+      Category: getCategoryLabel(item.category),
+      Price: formatPrice(item.price),
+      Description: (
+        <div className="max-w-xs truncate" title={item.description}>
+          {item.description}
+        </div>
+      ),
+      Available: (
+        <span
+          className={`px-2 py-1 rounded text-xs font-semibold ${
+            item.available !== false
+              ? "bg-green-500/20 text-green-400"
+              : "bg-red-500/20 text-red-400"
+          }`}
+        >
+          {item.available !== false ? "Available" : "Unavailable"}
+        </span>
+      ),
+      Edit: (
+        <Button variant="ghost" size="sm" onClick={() => editItem(item)}>
+          <Edit className="text-green-500 hover:text-green-700" />
+        </Button>
+      ),
+      Delete: (
+        <Button variant="ghost" size="sm" onClick={() => deleteItem(item.id)}>
+          <Delete className="text-red-500 hover:text-red-700" />
+        </Button>
+      ),
+    }));
 
   return (
     <div className="p-6 flex flex-col gap-6">
       <h1 className="text-2xl font-bold text-white">Manage Menu</h1>
 
-      {loading && (
-        <div className="text-white text-center">جاري التحميل...</div>
-      )}
+      {loading && <div className="text-white text-center">جاري التحميل...</div>}
 
       {/* Inputs */}
       <div className="flex flex-col md:flex-row gap-3 items-center">
